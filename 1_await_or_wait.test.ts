@@ -1,6 +1,6 @@
 // Your code below (Hint: setTimeout)
 // Should return a promise that will be rejected only after the given delay expressed in milliseconds
-const waitForDelay = (delayInMs: number) =>
+export const waitForDelay = (delayInMs: number) =>
   new Promise((resolve) => setTimeout(resolve, delayInMs));
 
 //////////////////////////////////////////////////
