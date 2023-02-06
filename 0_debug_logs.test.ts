@@ -1,26 +1,37 @@
-// Your code below 
+// Your code below
 // Should return a decorate functions with logs on each stage (PENDING, REJECTED, RESOLVED)
 // Hint: Promise.resolve(), Promise.reject(), promise.then(onfulfilled, onrejected)
-const debugAsync = <T>(fn: () => Promise<T>) => fn;
-
-
+const debugAsync =
+  <T>(fn: () => Promise<T>) =>
+  () => {
+    console.log(`PENDING`);
+    return fn().then(
+      (result) => {
+        console.log(`RESOLVED ${result}`);
+        return result;
+      },
+      (reason) => {
+        console.log(`REJECTED ${reason}`);
+        return Promise.reject(reason);
+      }
+    );
+  };
 
 //////////////////////////////////////////////////
 
 describe("Debug logs", () => {
-
   let history: string[] = [];
   const realConsoleLog = console.log;
   beforeEach(() => {
     console.log = (input: string) => {
       realConsoleLog(input);
-      history.push(input); 
-    }
-  })
+      history.push(input);
+    };
+  });
   afterEach(() => {
     history = [];
     console.log = realConsoleLog;
-  })
+  });
 
   it("should log (happy path)", async () => {
     // given
@@ -28,8 +39,8 @@ describe("Debug logs", () => {
     // when
     const result = await task();
     // then
-    expect(history[0]).toMatch('PENDING');
-    expect(history[1]).toMatch('RESOLVED 42');
+    expect(history[0]).toMatch("PENDING");
+    expect(history[1]).toMatch("RESOLVED 42");
     expect(result).toBe(42);
   });
 
@@ -39,8 +50,7 @@ describe("Debug logs", () => {
     // when
     // then
     await expect(task).rejects.toBeDefined();
-    expect(history[0]).toMatch('PENDING');
-    expect(history[1]).toMatch('REJECTED 42');
+    expect(history[0]).toMatch("PENDING");
+    expect(history[1]).toMatch("REJECTED 42");
   });
-
 });
