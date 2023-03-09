@@ -8,7 +8,6 @@ const promisify =
   (...args: any[]): Promise<any> => {
     return new Promise((resolve, reject) => {
       fn(...args, (error, data) => {
-        console.log(data);
         if (!error) {
           resolve(data);
         } else {
